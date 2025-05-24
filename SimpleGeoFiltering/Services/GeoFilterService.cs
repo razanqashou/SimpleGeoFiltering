@@ -23,13 +23,13 @@ namespace SimpleGeoFiltering.Services
         /// <returns>A list of filtered points sorted by distance from the center point.</returns>
 
         public IEnumerable<PlaceResult> FindWithinRadius(
-            GeoPoint center,
-            IEnumerable<GeoPoint> points,
-            double radius,
-            DistanceUnit radiusUnit = DistanceUnit.Kilometers,
-            string? country = null,
-            string? region = null,
-            List<string>? tags = null)
+      GeoPoint center,
+      IEnumerable<GeoPoint> points,
+      double radius,
+      DistanceUnit radiusUnit = DistanceUnit.Kilometers,
+      string? country = null,
+      string? region = null,
+      List<string>? tags = null)
         {
             double radiusKm = radiusUnit switch
             {
@@ -40,33 +40,37 @@ namespace SimpleGeoFiltering.Services
                 _ => radius
             };
 
-            return points
+            bool ignoreDistance = radiusKm <= 0;
+
+            var filteredPoints = points
                 .Where(p =>
                     (country == null || string.Equals(p.Country, country, StringComparison.OrdinalIgnoreCase)) &&
                     (region == null || string.Equals(p.Region, region, StringComparison.OrdinalIgnoreCase)) &&
-                    (tags == null || (p.Tags != null && p.Tags.Any(tag => tags.Contains(tag, StringComparer.OrdinalIgnoreCase)))))
-                .Select(p =>
+                    (tags == null || (p.Tags != null && p.Tags.Any(tag => tags.Contains(tag, StringComparer.OrdinalIgnoreCase)))));
+
+            var results = filteredPoints.Select(p =>
+            {
+                double distanceKm = GoFilterHelper.GetDistanceKm(center, p);
+                return new PlaceResult
                 {
-                    double distanceKm = GoFilterHelper.GetDistanceKm(center, p);
-                    return new PlaceResult
-                    {
-                        Name = p.Name,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Country = p.Country,
-                        Region = p.Region,
-                        Tags = p.Tags,
-                        DistanceKm = distanceKm,
-                        DisplayUnits = radiusUnit
-                    };
-                })
-                .Where(r => r.DistanceKm <= radiusKm)
-                .OrderBy(r => r.DistanceKm)
-                .ToList();
+                    Name = p.Name,
+                    Latitude = p.Latitude,
+                    Longitude = p.Longitude,
+                    Country = p.Country,
+                    Region = p.Region,
+                    Tags = p.Tags,
+                    DistanceKm = distanceKm,
+                    DisplayUnits = radiusUnit
+                };
+            });
+
+            if (!ignoreDistance)
+            {
+                results = results.Where(r => r.DistanceKm <= radiusKm);
+            }
+
+            return results.OrderBy(r => r.DistanceKm).ToList();
         }
 
-
-
-       
     }
-    }
+}
