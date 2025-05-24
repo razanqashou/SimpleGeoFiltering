@@ -37,7 +37,8 @@ namespace testttt.Controllers
             request.DisplayUnit,      
             request.Country,
             request.Region,
-            request.Tags
+            request.Tags,
+            request.name
         );
 
             return Ok(result);

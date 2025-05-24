@@ -17,6 +17,8 @@ namespace SimpleGeoFiltering.Interfaces
                DistanceUnit radiusUnit = DistanceUnit.Kilometers,
                string? country = null,
                string? region = null,
-               List<string>? tags = null);
+               List<string>? tags = null,
+             string? name = null
+        );
     }
 }

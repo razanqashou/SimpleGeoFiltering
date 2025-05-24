@@ -29,7 +29,9 @@ namespace SimpleGeoFiltering.Services
       DistanceUnit radiusUnit = DistanceUnit.Kilometers,
       string? country = null,
       string? region = null,
-      List<string>? tags = null)
+      List<string>? tags = null,
+      string? name = null // ✅ أضف هذا السطر
+  )
         {
             double radiusKm = radiusUnit switch
             {
@@ -46,7 +48,9 @@ namespace SimpleGeoFiltering.Services
                 .Where(p =>
                     (country == null || string.Equals(p.Country, country, StringComparison.OrdinalIgnoreCase)) &&
                     (region == null || string.Equals(p.Region, region, StringComparison.OrdinalIgnoreCase)) &&
-                    (tags == null || (p.Tags != null && p.Tags.Any(tag => tags.Contains(tag, StringComparer.OrdinalIgnoreCase)))));
+                    (tags == null || (p.Tags != null && p.Tags.Any(tag => tags.Contains(tag, StringComparer.OrdinalIgnoreCase)))) &&
+                    (name == null || p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)) 
+                );
 
             var results = filteredPoints.Select(p =>
             {
@@ -71,6 +75,5 @@ namespace SimpleGeoFiltering.Services
 
             return results.OrderBy(r => r.DistanceKm).ToList();
         }
-
     }
-}
+    }

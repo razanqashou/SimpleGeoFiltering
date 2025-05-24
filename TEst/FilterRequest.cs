@@ -18,6 +18,7 @@ namespace TEst
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public DistanceUnit DisplayUnit { get; set; }
+        public string? name { get; set; }
 
         //public DistanceUnit DisplayUnit { get; set; } = DistanceUnit.Kilometers;
 
