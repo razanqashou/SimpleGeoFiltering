@@ -1,26 +1,27 @@
 
 ---
 
-# 🌍 `SimpleGeoFiltering` – Full & Updated Documentation
+# 🌍 `SimpleGeoFiltering` – Full Updated Documentation
 
 ---
 
 ## 📦 Package Purpose
 
-`SimpleGeoFiltering` allows you to **filter places by location**, with **optional filters** like:
+`SimpleGeoFiltering` is used to **filter places by geographic distance**, with support for optional filters:
 
-* 📍 Radius
-* 🗺️ Country / Region
-* 🏷️ Tags (in Arabic or English)
-* 🔠 Partial Name Match (NEW ✅)
-
-It returns places with Google Maps links and localized distances (e.g. `3.50 km` / `٣٫٥٠ كم`).
+| Feature               | Description                                               |
+| --------------------- | --------------------------------------------------------- |
+| 📍 Radius Filtering   | Required – supports km, meters, miles, and nautical miles |
+| 🏙️ Country/Region    | Optional – filters by country or region                   |
+| 🏷️ Tags              | Optional – Arabic & English tags supported                |
+| 🔠 Partial Name Match | Optional – supports partial text search (in any language) |
+| 🌐 Localized Output   | Google Maps links and localized distance formatting       |
 
 ---
 
 ## 🛠️ Installation
 
-Install the package via NuGet:
+Install via NuGet:
 
 ```bash
 Install-Package SimpleGeoFiltering
@@ -30,24 +31,22 @@ Install-Package SimpleGeoFiltering
 
 ## ⚙️ Configuration
 
-Register the service in `Program.cs`:
+In `Program.cs`:
 
 ```csharp
 builder.Services.AddSimpleGeoFiltering();
 ```
 
-Now the service can be injected using **Dependency Injection**.
-
 ---
 
 ## 💉 Dependency Injection
 
-Inject the service where needed:
+Inject it into your class or controller:
 
 ```csharp
 private readonly IGeoFilterService _geoFilterService;
 
-public YourControllerOrClass(IGeoFilterService geoFilterService)
+public YourClass(IGeoFilterService geoFilterService)
 {
     _geoFilterService = geoFilterService;
 }
@@ -57,11 +56,11 @@ public YourControllerOrClass(IGeoFilterService geoFilterService)
 
 ## 🔁 Flow Overview
 
-Let’s say your user is standing in **Amman, Jordan**, and you want to find nearby places:
+Example: user is in **Amman, Jordan**, and wants to find places nearby.
 
 ---
 
-### 🔹 1. Prepare User Location
+### 🔹 1. User Location
 
 ```csharp
 var userLocation = new GeoPoint
@@ -73,7 +72,7 @@ var userLocation = new GeoPoint
 
 ---
 
-### 🔹 2. Prepare List of Places
+### 🔹 2. List of Places
 
 ```csharp
 var yourListOfPlaces = new List<GeoPoint>
@@ -110,9 +109,7 @@ var yourListOfPlaces = new List<GeoPoint>
 
 ---
 
-### 🔹 3. Call Filtering Method
-
-With full filters:
+### 🔹 3. Use the Filtering Method
 
 ```csharp
 var results = _geoFilterService.FindWithinRadius(
@@ -123,30 +120,30 @@ var results = _geoFilterService.FindWithinRadius(
     country: "Jordan",
     region: "Amman",
     tags: new List<string> { "tourism", "سياحة" },
-    name: "Citadel"
-);
-```
-
-Only by radius (NEW):
-
-```csharp
-var results = _geoFilterService.FindWithinRadius(
-    center: userLocation,
-    points: yourListOfPlaces,
-    radius: 10,
-    radiusUnit: DistanceUnit.Kilometers
-);
-```
-
-Search by name only (NEW):
-
-```csharp
-var results = _geoFilterService.FindWithinRadius(
-    center: userLocation,
-    points: yourListOfPlaces,
-    radius: 10,
-    radiusUnit: DistanceUnit.Kilometers,
     name: "قلعة"
+);
+```
+
+**Or: just radius filter (NEW):**
+
+```csharp
+_geoFilterService.FindWithinRadius(
+    center: userLocation,
+    points: yourListOfPlaces,
+    radius: 10,
+    radiusUnit: DistanceUnit.Miles
+);
+```
+
+**Or: just name search (NEW):**
+
+```csharp
+_geoFilterService.FindWithinRadius(
+    center: userLocation,
+    points: yourListOfPlaces,
+    radius: 10,
+    radiusUnit: DistanceUnit.Meters,
+    name: "Citadel"
 );
 ```
 
@@ -237,25 +234,35 @@ public class FilterRequest
     public string? Country { get; set; }
     public string? Region { get; set; }
     public List<string>? Tags { get; set; }
-    public string? Name { get; set; } // ✅ NEW
+    public string? Name { get; set; }
+
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public DistanceUnit DisplayUnit { get; set; }
 }
 ```
 
----
-
-## ✅ Key Features
-
-| Feature             | Description                                      |
-| ------------------- | ------------------------------------------------ |
-| 📍 Radius Filtering | Required distance logic (km, m, miles, nautical) |
-| 🏙️ Country/Region  | Optional filters                                 |
-| 🏷️ Tags            | Arabic & English supported                       |
-| 🔠 Name Matching    | ✅ NEW – Partial search support                   |
-| 🌍 Map URLs         | Clean Google Maps links                          |
-| 🌐 Localized Output | Supports both Arabic & English                   |
+```csharp
+public enum DistanceUnit
+{
+    Kilometers,
+    Meters,
+    Miles,
+    NauticalMiles
+}
+```
 
 ---
 
+## ✅ Summary of Features
 
+| Feature               | Status | Notes                                       |
+| --------------------- | ------ | ------------------------------------------- |
+| 📍 Radius             | ✅      | Required                                    |
+| 🏙 Country / Region   | ✅      | Optional                                    |
+| 🏷 Tags (EN + AR)     | ✅      | Optional                                    |
+| 🔠 Partial Name Match | ✅      | Optional (contains, not exact match)        |
+| 🌍 Google Maps Link   | ✅      | Automatically generated                     |
+| 🌐 Localized Distance | ✅      | Based on selected display unit + language   |
+| 📏 Unit Filter        | ✅      | `Kilometers`, `Meters`, `Miles`, `Nautical` |
+
+---
