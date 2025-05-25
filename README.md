@@ -1,4 +1,4 @@
-
+All versions of this package, including earlier releases, are licensed under the MIT License. See LICENSE.txt for details.
 ---
 
 # 🌍 `SimpleGeoFiltering` – Full Updated Documentation
