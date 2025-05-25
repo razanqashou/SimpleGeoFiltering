@@ -1,5 +1,4 @@
 
-
 ---
 
 # 🌍 `SimpleGeoFiltering` – Full & Updated Documentation
