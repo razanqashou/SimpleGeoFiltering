@@ -5,11 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Lightweight geographic filtering to find nearby locations without external APIs. Suitable for offline apps.</Description>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <Authors>RazanQashou</Authors>
     <PackageId>SimpleGeoFiltering</PackageId>
     <Title>GeoFiltering</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+
+	  <None Include="LICENSE.txt" Pack="true" PackagePath="" />
   </ItemGroup>
+
 
 </Project>
