@@ -8,16 +8,9 @@ using SimpleGeoFiltering.DTOs;
 namespace SimpleGeoFiltering.Helper
 {
     public static class GoFilterHelper
-    { /// <summary>
-      /// Helper class that provides geospatial calculation methods.
-      /// </summary>
+    { 
         private const double EarthRadiusKm = 6371.0;
-        /// <summary>
-        /// Calculates the great-circle distance between two geographic points using the Haversine formula.
-        /// </summary>
-        /// <param name="p1">The first geographic point.</param>
-        /// <param name="p2">The second geographic point.</param>
-        /// <returns>The distance in kilometers between the two points.</returns>
+        
         public static double GetDistanceKm(GeoPoint p1, GeoPoint p2)
         {
             double latRad = ToRadians(p2.Latitude - p1.Latitude);
@@ -31,11 +24,7 @@ namespace SimpleGeoFiltering.Helper
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return EarthRadiusKm * c;
         }
-        /// <summary>
-        /// Converts an angle from degrees to radians.
-        /// </summary>
-        /// <param name="angle">Angle in degrees.</param>
-        /// <returns>Angle in radians.</returns>
+        
         public static double ToRadians(double angle)
         {
             return angle * Math.PI / 180.0;

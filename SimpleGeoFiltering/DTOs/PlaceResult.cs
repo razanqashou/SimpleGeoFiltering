@@ -2,10 +2,7 @@
 using SimpleGeoFiltering.DTOs;
 using SimpleGeoFiltering.Helper;
 
-/// <summary>
-/// Represents the result of a geographic place search, including location, distance,
-/// and optional metadata such as country, region, and tags.
-/// </summary>
+
 public class PlaceResult
 {
     

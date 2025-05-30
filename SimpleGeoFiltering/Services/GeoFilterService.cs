@@ -9,18 +9,7 @@ namespace SimpleGeoFiltering.Services
 {
     public class GeoFilterService : IGeoFilterService
     {
-        /// <summary>
-        /// Finds all geographical points within a specified radius from a center point,
-        /// with optional filtering by country, region, and tags.
-        /// </summary>
-        /// <param name="center">The center point (latitude and longitude).</param>
-        /// <param name="points">A collection of points to filter.</param>
-        /// <param name="radius">The search radius around the center point.</param>
-        /// <param name="radiusUnit">The unit of the radius (default is kilometers).</param>
-        /// <param name="country">Optional country filter (case-insensitive).</param>
-        /// <param name="region">Optional region filter (case-insensitive).</param>
-        /// <param name="tags">Optional list of tags to match (case-insensitive).</param>
-        /// <returns>A list of filtered points sorted by distance from the center point.</returns>
+      
 
         public IEnumerable<PlaceResult> FindWithinRadius(
       GeoPoint center,
@@ -30,7 +19,7 @@ namespace SimpleGeoFiltering.Services
       string? country = null,
       string? region = null,
       List<string>? tags = null,
-      string? name = null // ✅ أضف هذا السطر
+      string? name = null 
   )
         {
             double radiusKm = radiusUnit switch
